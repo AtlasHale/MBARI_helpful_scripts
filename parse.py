@@ -125,11 +125,14 @@ def species_split_histogram(all_lines, video_id):
                 timestamp[seconds] = selection[3]
                 video[selection[0]].append(seconds)
     all_species = []
+    colors = ['#E69F00', '#0000FF', '#D55E00', '#F0E442', '#000000', ]
+    c = []
+    i = 0
     for key in video.keys():
         subset_timestamps = video[key]
         all_species.append(subset_timestamps)
-    colors = ['#E69F00', '#D55E00', '#F0E442', '#000000']
-    plt.hist(all_species, color=colors, label=video.keys())
+        c.append(colors[i])
+    plt.hist(all_species, color=c, label=video.keys())
 
     plt.legend(prop={'size': 12}, title=video_id)
     plt.title(video_id)
