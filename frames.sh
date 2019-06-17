@@ -1,9 +1,14 @@
 #! /bin/bash
+cd clips
+shopt -s nullglob
 for f in *; do
 	cd $f
-	for video in *; do
+	echo $f
+	for video in *.mov; do
+		echo $video
 		mkdir "$video"_frames
-		ffmpeg -i $video -vf fps=.5 "$video"_frames/"$f"%04d.png -hide_banner;
+		ffmpeg -i $video -vf fps=.5 "$video"_frames/"$video"%04d.png -hide_banner;
 	done
+	cd ..
 done
 
