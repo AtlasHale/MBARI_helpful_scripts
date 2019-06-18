@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import os
+import csv
+
 
 def main():
     """
@@ -14,28 +16,18 @@ def main():
         fields = line.split('\t')
         # remove trailing newlines, spaces replaced with _
         for i in range(len(fields)):
-            single = fields[i]
-            temp_single = ""
-            for j in range(len(single)):
-                if single[j] == ' ':
-                    if j != 0 and j != len(single)-1:
-                        temp_single += '_'
-                elif single[j] == '\n':
-                    continue
-                else:
-                    temp_single += single[j]
-            fields[i] = temp_single
-            if fields[i] == '':
-                fields.pop(i)
+            fields[i] = fields[i].strip(' \n\t').replace(' ','_')
         all_lines.append(fields)
-
+    for x in all_lines:
+        print(x)
+    # query_to_csv()
     # occurences = species_per_tape(all_lines)
     # print_tapes(occurences)
     # species_split_histogram(all_lines, input("Video ID: "))
     # specific_species(all_lines)
     # prompt_tape(all_lines)
     # start_and_end()
-    print_all(all_lines)
+    # print_all(all_lines)
 
 
 def prompt_tape(all_lines):
@@ -165,6 +157,21 @@ def print_all(all_lines):
                         str(y[len(y)-3]))
             print()
 
+
+
+def query_to_csv():
+    data = []
+
+    file = open('updated', 'r')
+    for line in file:
+        string = line.replace('\n', '')
+        data.append(list(string.split('\t')))
+    print("Read Taxa Data.")
+
+    with open('genus_data_videos.csv', 'w') as csvFile:
+        writer = csv.writer(csvFile)
+        writer.writerows(data)
+    csvFile.close()
 
 if __name__ == '__main__':
     main()
