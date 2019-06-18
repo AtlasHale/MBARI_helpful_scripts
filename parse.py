@@ -8,7 +8,7 @@ def main():
     and create histogram from specific tapes to find high density 
     areas of tape to improve tape to digital conversion efficiency.
     """
-    file = open('rare_benthic_filter')
+    file = open('updated')
     all_lines = []
     for line in file:
         fields = line.split('\t')
@@ -31,10 +31,11 @@ def main():
 
     # occurences = species_per_tape(all_lines)
     # print_tapes(occurences)
-    species_split_histogram(all_lines, input("Video ID: "))
+    # species_split_histogram(all_lines, input("Video ID: "))
     # specific_species(all_lines)
     # prompt_tape(all_lines)
-    start_and_end()
+    # start_and_end()
+    print_all(all_lines)
 
 
 def prompt_tape(all_lines):
@@ -132,6 +133,11 @@ def species_split_histogram(all_lines, video_id):
         subset_timestamps = video[key]
         all_species.append(subset_timestamps)
         c.append(colors[i])
+        i += 1
+        print(key)
+        for ts in subset_timestamps:
+            print(timestamp[ts])
+        print()
     plt.hist(all_species, color=c, label=video.keys())
 
     plt.legend(prop={'size': 12}, title=video_id)
@@ -142,6 +148,22 @@ def species_split_histogram(all_lines, video_id):
         os.remove('species_density_'+video_id+'.png')
     plt.savefig('species_density_'+video_id+'.png', bbox_inches='tight')
     plt.show()
+
+
+def print_all(all_lines):
+    seen = set()
+    for x in all_lines:
+        if x[len(x)-1] not in seen:
+            seen.add(x[len(x)-1])
+            curr = x[len(x)-1]
+            print(x[len(x)-1])
+            for y in all_lines:
+                if y[len(y)-1] == curr:
+                    print(
+                        str(y[0]).ljust(40, ' '),
+                        str(y[len(y)-2]).ljust(25, ' '),
+                        str(y[len(y)-3]))
+            print()
 
 
 if __name__ == '__main__':
